@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <mutex>
 #include <string>
+#include <thread>
 #include <vector>
 #include "llama.h"
 
@@ -33,7 +34,8 @@ Java_com_andy_assistant_LocalLlmEngine_loadModel(JNIEnv *env, jobject, jstring p
     llama_context_params context_params = llama_context_default_params();
     context_params.n_ctx = 2048;
     context_params.n_batch = 512;
-    context_params.n_threads = std::max(2, (int)std::thread::hardware_concurrency() - 2);
+    const unsigned int cores = std::thread::hardware_concurrency();
+    context_params.n_threads = std::max(2, (int)cores - 2);
     context_params.n_threads_batch = context_params.n_threads;
     g_context = llama_init_from_model(g_model, context_params);
     if (!g_context) { unload_locked(); LOGE("Could not create llama context"); return JNI_FALSE; }
@@ -50,8 +52,7 @@ Java_com_andy_assistant_LocalLlmEngine_generate(JNIEnv *env, jobject, jstring in
     env->ReleaseStringUTFChars(input, raw);
 
     llama_memory_clear(llama_get_memory(g_context), true);
-    const int capacity = std::max(256, (int)prompt.size() * 2 + 16);
-    std::vector<llama_token> tokens((size_t)capacity);
+    std::vector<llama_token> tokens(std::max(256, (int)prompt.size() * 2 + 16));
     int32_t token_count = llama_tokenize(g_vocab, prompt.c_str(), (int32_t)prompt.size(),
                                          tokens.data(), (int32_t)tokens.size(), true, true);
     if (token_count < 0) {
@@ -60,6 +61,7 @@ Java_com_andy_assistant_LocalLlmEngine_generate(JNIEnv *env, jobject, jstring in
                                      tokens.data(), (int32_t)tokens.size(), true, true);
     }
     if (token_count <= 0 || token_count > (int)tokens.size()) return env->NewStringUTF("I couldn't tokenize that prompt.");
+    if (token_count >= 2040) return env->NewStringUTF("That message is too long for Andy's current context window.");
     tokens.resize((size_t)token_count);
 
     llama_batch batch = llama_batch_get_one(tokens.data(), (int32_t)tokens.size());
@@ -77,11 +79,10 @@ Java_com_andy_assistant_LocalLlmEngine_generate(JNIEnv *env, jobject, jstring in
     for (int i = 0; i < limit; ++i) {
         llama_token token = llama_sampler_sample(sampler, g_context, -1);
         if (llama_vocab_is_eog(g_vocab, token)) break;
+        llama_sampler_accept(sampler, token);
         int n = llama_token_to_piece(g_vocab, token, piece.data(), (int)piece.size(), 0, true);
         if (n > 0) answer.append(piece.data(), (size_t)n);
-        llama_sampler_accept(sampler, token);
-        llama_token next = token;
-        llama_batch next_batch = llama_batch_get_one(&next, 1);
+        llama_batch next_batch = llama_batch_get_one(&token, 1);
         if (llama_decode(g_context, next_batch) != 0) break;
     }
     llama_sampler_free(sampler);
