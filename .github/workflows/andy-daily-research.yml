@@ -30,6 +30,8 @@ jobs:
         run: python -m unittest -v
       - name: Collect public advisories
         working-directory: andy
+        env:
+          ANDY_REPORT_DIR: ../RESEARCH/DAILY
         run: python run_research.py
       - name: Publish daily briefing
         env:
