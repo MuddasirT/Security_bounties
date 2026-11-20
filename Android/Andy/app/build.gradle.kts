@@ -18,6 +18,15 @@ android {
         buildConfigField("String", "ANDY_API_BASE_URL", "\"$gatewayUrl\"")
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true
