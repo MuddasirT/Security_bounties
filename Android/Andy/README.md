@@ -1,39 +1,42 @@
 # Andy Android
 
-Native Android starter for Andy, built with Kotlin and Jetpack Compose.
+Native Android assistant built with Kotlin, Jetpack Compose, and llama.cpp.
 
-## Implemented in this starter
-- Compose chat interface.
-- Push-to-talk speech recognition through Android's system recognizer.
-- Spoken replies through Android TextToSpeech.
-- Typed and recognized messages sent to the Andy FastAPI gateway.
-- HTTPS gateway URL configurable at build time.
-- Gateway routes to a configured local OpenAI-compatible model first, then a configured cloud model.
+## Local AI implemented
+- On-device GGUF inference through llama.cpp JNI.
+- ARM64 Android native build, CPU backend.
+- Import a GGUF file using Android's system file picker.
+- The model is copied to app-private storage and loaded from the phone.
+- Chat generation runs on a background dispatcher.
+- No backend URL, cloud API key, network permission, or local HTTP server is used for text inference.
+- Push-to-talk through Android's speech-recognition service and spoken replies through Android TextToSpeech.
 
-## Not implemented yet
-- Production user sign-in and secure session provisioning.
-- Always-on wake phrase / background microphone service.
-- Conversation persistence and sync.
-- GitHub tools and user-confirmed agent actions.
-- Packaged, signed release APK.
+## Getting started
+1. Install the debug APK on an ARM64 Android phone.
+2. Download a compatible instruct GGUF model from its publisher. Review the license and model card first.
+3. Open Andy, choose Import GGUF, and select the model file.
+4. Tap Load model. Start with a 3B or 4B Q4 quantized model.
+5. Send a message. The model runs on the device.
 
-These are deliberate next milestones. This starter is not yet a finished Siri replacement or production-ready assistant.
+The model weights are not bundled in the APK. Importing copies the file into Andy's private internal storage, so ensure sufficient free storage. Removing app data removes the imported model.
 
 ## Build
-Open this directory in Android Studio (JDK 17 recommended), allow Gradle sync, then run on an Android 8.0+ device. A physical device is recommended for speech-recognition testing.
+Open this directory in Android Studio with JDK 17. The build uses Android NDK 27.2.12479018, CMake 3.22.1, and the llama.cpp tag b4517.
 
-Set the gateway URL in the Gradle property `andyApiBaseUrl`. Example:
-```bash
-./gradlew :app:assembleDebug -PandyApiBaseUrl=https://your-private-gateway.example
-```
+Run: gradle :app:assembleDebug
 
-Package: `com.andy.assistant`
+Package: com.andy.assistant
 Minimum SDK: 26
 Target SDK: 35
+ABI: arm64-v8a
 
-## Privacy and security
-- The app requests microphone permission only after the user taps Speak.
-- It does not continuously record audio.
-- Speech recognition uses Android's installed speech-recognition service; depending on device settings/provider, speech processing may use that provider's service.
-- Provider API keys must remain on the gateway, never in the APK.
-- Do not expose the gateway publicly until real user authentication, HTTPS, rate limiting, request limits, secret management, and audit logging are configured.
+## First milestone limitations
+- CPU inference only. Mali GPU acceleration is not enabled.
+- 2048-token context; up to 512 generated tokens.
+- The first prompt wrapper is generic. Exact model-specific chat templates will be added in a later pass.
+- No streaming output or cancel-generation button yet.
+- Android's speech-recognition provider may use its own network service. Typed text inference itself does not use the network.
+- No always-on microphone or wake phrase.
+
+## Privacy
+Model files and typed prompts stay inside the app's local process/storage. The app does not start a server or send chat requests to a backend. Microphone permission is requested only after the user taps Speak.
