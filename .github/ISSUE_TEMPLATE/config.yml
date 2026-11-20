@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security disclosure
+    url: https://github.com/MuddasirT/Security_bounties/security/advisories/new
+    about: Use private vulnerability reporting where available. Do not post sensitive details publicly.
