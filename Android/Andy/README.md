@@ -21,7 +21,7 @@ Native Android assistant built with Kotlin, Jetpack Compose, and llama.cpp.
 The model weights are not bundled in the APK. Importing copies the file into Andy's private internal storage, so ensure sufficient free storage. Removing app data removes the imported model.
 
 ## Build
-Open this directory in Android Studio with JDK 17. The build uses Android NDK 27.2.12479018, CMake 3.22.1, and the llama.cpp tag b4517.
+Open this directory in Android Studio with JDK 17. The build uses Android NDK 27.2.12479018, CMake 3.22.1, and the llama.cpp tag b12556.
 
 Run: gradle :app:assembleDebug
 
