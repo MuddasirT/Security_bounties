@@ -1,0 +1,72 @@
+name: Security finding (sanitized)
+description: Record a sanitized finding after confirming authorization and scope.
+title: "[Finding]: "
+labels: ["security-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, tokens, session cookies, personal data, or other users' information.
+        Do not publish sensitive exploit details. Use a private disclosure channel when required.
+  - type: checkboxes
+    id: authorization
+    attributes:
+      label: Authorization
+      options:
+        - label: I own this asset or have current written authorization to test it.
+          required: true
+        - label: I checked the current program scope, exclusions, and testing rules.
+          required: true
+  - type: input
+    id: asset
+    attributes:
+      label: In-scope asset
+      description: Use the exact approved hostname, app, API, or component.
+      placeholder: api.example.test
+    validations:
+      required: true
+  - type: input
+    id: program
+    attributes:
+      label: Program or authorization reference
+      placeholder: Public program URL or internal authorization reference
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Proposed severity
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+        - Informational
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Sanitized summary
+      description: Explain the issue without secrets or sensitive data.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact and preconditions
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal safe reproduction
+      description: Use test accounts and synthetic data only. No destructive steps.
+    validations:
+      required: true
+  - type: textarea
+    id: remediation
+    attributes:
+      label: Suggested remediation
+    validations:
+      required: true
