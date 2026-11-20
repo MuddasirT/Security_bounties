@@ -24,6 +24,7 @@ extern "C" JNIEXPORT jboolean JNICALL
 Java_com_andy_assistant_LocalLlmEngine_loadModel(JNIEnv *env, jobject, jstring path) {
     std::lock_guard<std::mutex> lock(g_mutex);
     unload_locked();
+    llama_backend_init();
     const char *file = env->GetStringUTFChars(path, nullptr);
     llama_model_params model_params = llama_model_default_params();
     model_params.use_mmap = true;
