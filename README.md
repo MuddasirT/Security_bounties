@@ -26,6 +26,11 @@ Andy is a research and engineering assistant for **authorized security testing**
 - `TEMPLATES/FINDING_REPORT.md` - vulnerability report template.
 - `TEMPLATES/ASSET_AUTHORIZATION.md` - authorization and scope record.
 - `RESEARCH/README.md` - index for future research notes.
+- `SECURITY.md` - repository security policy and private reporting guidance.
+- `CONTRIBUTING.md` - safe contribution workflow.
+- `.github/ISSUE_TEMPLATE/` - structured, sanitized finding intake.
+- `.github/pull_request_template.md` - review checklist.
+- `.gitignore` - excludes common secrets and raw evidence artifacts.
 
 ## Standard workflow
 1. Record the owner, authorization source, program URL, scope, exclusions, and test window.
@@ -36,7 +41,7 @@ Andy is a research and engineering assistant for **authorized security testing**
 6. Submit through the program's approved disclosure channel and track the response.
 
 ## Status
-Headquarters initialized. This repository contains process documentation and checklists, not claims of completed security testing or confirmed vulnerabilities.
+Headquarters configured with research playbooks, authorization records, sanitized finding intake, contribution guidance, and repository safety defaults. This repository contains process documentation and checklists, not claims of completed security testing or confirmed vulnerabilities.
 
 ---
 **Use:** Defensive security research and authorized testing only.
