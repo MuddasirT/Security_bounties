@@ -31,6 +31,14 @@ Andy is a research and engineering assistant for **authorized security testing**
 - `.github/ISSUE_TEMPLATE/` - structured, sanitized finding intake.
 - `.github/pull_request_template.md` - review checklist.
 - `.gitignore` - excludes common secrets and raw evidence artifacts.
+- `ARCHITECTURE.md` - Andy's multi-agent architecture and trust boundaries.
+- `DEPLOYMENT.md` - cloud deployment phases and operational hardening.
+- `POLICY/AUTHORIZATION_GATE.md` - fail-closed authorization requirements.
+- `AGENTS/README.md` - specialist agent roles and output contract.
+- `schemas/` - machine-readable authorization and finding records.
+- `config/agent-manifest.yaml` - versioned agent capability and safety manifest.
+- `.github/workflows/validate-research.yml` - documentation/schema validation only.
+
 
 ## Standard workflow
 1. Record the owner, authorization source, program URL, scope, exclusions, and test window.
@@ -41,7 +49,7 @@ Andy is a research and engineering assistant for **authorized security testing**
 6. Submit through the program's approved disclosure channel and track the response.
 
 ## Status
-Headquarters configured with research playbooks, authorization records, sanitized finding intake, contribution guidance, and repository safety defaults. This repository contains process documentation and checklists, not claims of completed security testing or confirmed vulnerabilities.
+Headquarters configured with research playbooks, multi-agent architecture, cloud deployment plan, authorization gate, agent manifest, structured schemas, sanitized finding intake, contribution guidance, and repository safety defaults. This repository contains process documentation and checklists, not claims of completed security testing or confirmed vulnerabilities.
 
 ---
 **Use:** Defensive security research and authorized testing only.
