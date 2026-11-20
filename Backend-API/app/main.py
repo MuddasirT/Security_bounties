@@ -1,6 +1,9 @@
 from typing import Literal
 import os
 import httpx
+from dotenv import load_dotenv
+
+load_dotenv()
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field
 
