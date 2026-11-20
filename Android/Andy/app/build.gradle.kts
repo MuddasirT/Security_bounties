@@ -14,9 +14,14 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "0.1.0"
+        val gatewayUrl = providers.gradleProperty("andyApiBaseUrl").orElse("https://YOUR_GATEWAY_HOST").get()
+        buildConfigField("String", "ANDY_API_BASE_URL", "\"$gatewayUrl\"")
     }
 
-    buildFeatures {\n        compose = true\n        buildConfig = true\n    }\n\n    val gatewayUrl = providers.gradleProperty("andyApiBaseUrl").orElse("https://YOUR_GATEWAY_HOST").get()\n    defaultConfig { buildConfigField("String", "ANDY_API_BASE_URL", "\"$gatewayUrl\"") }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
 }
 
 dependencies {
