@@ -27,7 +27,7 @@ Java_com_andy_assistant_LocalLlmEngine_loadModel(JNIEnv *env, jobject, jstring p
     llama_backend_init();
     const char *file = env->GetStringUTFChars(path, nullptr);
     llama_model_params model_params = llama_model_default_params();
-    model_params.use_mmap = true;
+    model_params.load_mode = LLAMA_LOAD_MODE_MMAP;
     g_model = llama_model_load_from_file(file, model_params);
     env->ReleaseStringUTFChars(path, file);
     if (!g_model) { LOGE("Could not load model file"); return JNI_FALSE; }
