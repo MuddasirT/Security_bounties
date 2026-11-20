@@ -1,0 +1,54 @@
+version: 1
+coordinator: andy
+deployment_mode: external_agents_cloud
+default_mode: passive_only
+authorization_gate:
+  required_for_active_testing: true
+  human_approval_required: true
+  fail_closed: true
+  scope_expiry_enforced: true
+  redirect_scope_revalidation: true
+  global_kill_switch: true
+agents:
+  - id: scope-researcher
+    role: program_scope_analysis
+    tools: [public_web_read]
+  - id: recon-researcher
+    role: approved_asset_inventory
+    tools: [public_web_read]
+  - id: web-reviewer
+    role: web_application_security_review
+    tools: [source_read, approved_evidence_read]
+  - id: api-reviewer
+    role: rest_api_security_review
+    tools: [source_read, approved_evidence_read]
+  - id: android-reviewer
+    role: android_artifact_review
+    tools: [artifact_read, source_read]
+  - id: ios-reviewer
+    role: ios_artifact_review
+    tools: [artifact_read, source_read]
+  - id: identity-reviewer
+    role: authentication_authorization_review
+    tools: [source_read, approved_evidence_read]
+  - id: code-reviewer
+    role: source_dependency_review
+    tools: [repository_read]
+  - id: advisory-researcher
+    role: public_advisory_research
+    tools: [public_web_read]
+  - id: finding-reviewer
+    role: finding_quality_review
+    tools: [finding_read]
+target_tool_gateway:
+  enabled: false
+  mode: disabled_until_human_approval
+  max_default_rps: 1
+  block_out_of_scope_redirects: true
+  block_private_network_ranges: true
+  log_request_metadata: true
+  store_sensitive_response_bodies: false
+github_publisher:
+  enabled: false
+  mode: human_approved_reports_only
+  credentials_source: cloud_secret_manager
