@@ -1,6 +1,6 @@
 # Andy local inference engine
 
-Andy now uses llama.cpp through JNI. The app targets **arm64-v8a** and builds the native engine from the pinned llama.cpp tag `b4517`.
+Andy now uses llama.cpp through JNI. The app targets **arm64-v8a** and builds the native engine from the pinned llama.cpp tag `b12556`.
 
 ## Install a model
 1. Build and install the debug APK.
