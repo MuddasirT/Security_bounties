@@ -1,0 +1,27 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+secrets/
+credentials/
+
+# Local research artifacts
+*.pcap
+*.pcapng
+*.har
+*.sqlite
+*.db
+evidence/raw/
+captures/
+screenshots/private/
+
+# Tool and OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
