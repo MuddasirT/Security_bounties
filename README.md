@@ -53,3 +53,16 @@ Headquarters configured with research playbooks, multi-agent architecture, cloud
 
 ---
 **Use:** Defensive security research and authorized testing only.
+
+
+## Free automated Andy runtime
+
+The first working cloud automation is a GitHub Actions workflow:
+- `.github/workflows/andy-daily-research.yml`
+- Python specialist modules in `andy/`
+- Daily reports in `RESEARCH/DAILY/`
+- Operating limits and cost assumptions in `FREE_TIER.md`
+
+It runs daily at 08:00 India time and can be started manually from the GitHub Actions tab. It collects public CISA KEV and GitHub Advisory Database records and routes them through Android, iOS, web, API, cloud, and general research modules. It does not scan target websites or call paid AI APIs.
+
+GitHub Actions must be enabled in repository settings. For the free public-repository model, keep this repository public. Private-repository usage may consume the account's included Actions minutes.
