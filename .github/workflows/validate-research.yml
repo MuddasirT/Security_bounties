@@ -1,0 +1,46 @@
+name: Validate research records
+
+on:
+  pull_request:
+    paths:
+      - "schemas/**"
+      - "AGENTS/**"
+      - "POLICY/**"
+      - "RESEARCH/**"
+      - "*.md"
+  push:
+    branches: ["main"]
+    paths:
+      - "schemas/**"
+      - "AGENTS/**"
+      - "POLICY/**"
+      - "RESEARCH/**"
+      - "*.md"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate JSON schemas
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in Path("schemas").glob("*.json"):
+              json.loads(path.read_text(encoding="utf-8"))
+              print(f"Valid JSON: {path}")
+          PY
+      - name: Check required policy files
+        run: |
+          test -f POLICY.md
+          test -f POLICY/AUTHORIZATION_GATE.md
+          test -f SECURITY.md
+          test -f AGENTS/README.md
+          echo "Required policy files are present."
