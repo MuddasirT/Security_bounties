@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Andy Candidate Security Finding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["finding_id", "assessment_id", "title", "asset", "status", "confidence", "impact", "evidence_summary", "safe_reproduction", "remediation", "scope_checked"],
+  "properties": {
+    "finding_id": {"type": "string"},
+    "assessment_id": {"type": "string"},
+    "title": {"type": "string", "minLength": 5},
+    "asset": {"type": "string"},
+    "status": {"enum": ["candidate", "validated", "rejected", "needs_human"]},
+    "severity": {"enum": ["critical", "high", "medium", "low", "informational", "unrated"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "impact": {"type": "string"},
+    "evidence_summary": {"type": "string"},
+    "safe_reproduction": {"type": "string"},
+    "remediation": {"type": "string"},
+    "references": {"type": "array", "items": {"type": "string", "format": "uri"}},
+    "scope_checked": {"const": true},
+    "contains_sensitive_data": {"const": false}
+  }
+}
