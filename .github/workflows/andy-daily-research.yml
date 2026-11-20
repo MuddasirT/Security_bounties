@@ -2,6 +2,11 @@ name: Andy Daily Security Research
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'andy/**'
+      - '.github/workflows/andy-daily-research.yml'
   schedule:
     - cron: "30 2 * * *"
 
