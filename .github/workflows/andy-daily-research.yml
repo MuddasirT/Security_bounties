@@ -1,0 +1,46 @@
+name: Andy Daily Security Research
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 2 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: andy-daily-security-research
+  cancel-in-progress: false
+
+jobs:
+  passive-public-intelligence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout headquarters
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test specialist routing
+        working-directory: andy
+        run: python -m unittest -v
+      - name: Collect public advisories
+        working-directory: andy
+        run: python run_research.py
+      - name: Publish daily briefing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "andy-security-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add RESEARCH/DAILY
+          if git diff --cached --quiet; then
+            echo "No report changes to publish."
+          else
+            git commit -m "chore(research): publish Andy daily security briefing"
+            git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push
+          fi
