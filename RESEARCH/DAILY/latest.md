@@ -1,396 +1,85 @@
-# Andy Security Intelligence Briefing: 2026-11-20
+# Andy Security Intelligence Briefing: 2026-11-21
 
-> Generated at 2026-11-20 05:43 UTC. Public advisory research only. No target testing was performed.
+> Prepared 2026-11-21. Sources checked for this briefing are linked inline. This is public-source research only: no target scans, probes, or exploitation were performed.
 
-## Executive summary
+## Executive priorities
 
-- Public advisories collected: **1886**
-- CISA Known Exploited Vulnerabilities: **1786**
-- Feed errors: **0**
+1. **Patch VMware vCenter immediately**: CVE-2026-123890 is a critical authentication bypass, and Google/Mandiant report exploitation in September 2026.
+2. **Review Java runtimes and CPU exposure**: Java4Shell (CVE-2026-114938) can enable pre-authentication RCE under a specific OpenJDK + AVX-512 VBMI combination.
+3. **Update application runtimes and edge services**: Node.js/Brotli, nginx HTTP/2, and Ruby all have recent memory-safety issues with serious RCE potential.
+4. **Install mobile updates**: Android's November patch level and iOS/iPadOS 27.2.1 address critical or privacy-impacting flaws.
+5. **Treat OAuth integration boundaries as security boundaries**: current IETF work highlights cross-provider and cross-toolkit account-takeover risks.
 
-## Specialist agent findings
+## High-impact vulnerabilities and vendor advisories
 
-### Android Security Agent
+### 1. VMware vCenter authentication bypass
+- **CVE-2026-123890 | CVSS 9.8 Critical | Published 19 Nov; Broadcom updated 20 Nov 2026.**
+- Broadcom says a network-reachable attacker can bypass VMware Directory Service authentication and gain unauthorized access. No workaround is listed. Fixed versions include vCenter 8.0 U3m, VCF/vSphere Foundation 9.0.2.0200 or 9.1.1.0200, and VCF 5.2.5. Check the response matrix for the exact product branch.
+- **Exploitation status: confirmed by GTIG/Mandiant forensic reporting.** They say suspected PRC-nexus actor ARMORY CASTLE exploited it in early September, including creation of an SSO administrator and theft of vCenter directory data and SAML signing material. This is not merely a theoretical risk.
+- **Action:** patch urgently, restrict vCenter management-plane reachability, and if compromise is plausible, investigate SSO administrator changes, STS signing material, unexpected SSH enablement and the indicators in the GTIG report. Patching alone does not remove an attacker who already established persistence.
+- Sources: [Broadcom VMSA-2026-0009.1](https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/39495) · [Google GTIG/Mandiant analysis, 19 Nov](https://cloud.google.com/blog/topics/threat-intelligence/armory-castle-exploits-vsphere)
 
-- **[CVE-2026-58704](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Google Pixel Improper Authorization Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-16
-  - Products: Google, Pixel
-  - Google Pixel devices contain an improper authorization vulnerability in the cellular modem. A logic error may allow an attacker to bypass permission checks and escalate privileges.
-- **[CVE-2025-48595](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Framework Integer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-06-02
-  - Products: Android, Framework
-  - Android Framework contains an integer overflow vulnerability that allows for code execution that could allow for local privilege escalation.
-- **[CVE-2026-3909](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Google Skia Out-of-Bounds Write Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-13
-  - Products: Google, Skia
-  - Google Skia contains an out-of-bounds write vulnerability that could allow a remote attacker to perform out of bounds memory access via a crafted HTML page. This vulnerability affects Google Chrome and ChromeOS, Android, Flutter, and possibly other products.
-- **[CVE-2025-48633](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Framework Information Disclosure Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2025-12-02
-  - Products: Android, Framework
-  - Android Framework contains an unspecified vulnerability that allows for information disclosure.
-- **[CVE-2025-48572](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Framework Privilege Escalation Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2025-12-02
-  - Products: Android, Framework
-  - Android Framework contains an unspecified vulnerability that allows for privilege escalation.
-- **[CVE-2025-48543](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Runtime Use-After-Free Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2025-09-04
-  - Products: Android, Runtime
-  - Android Runtime contains a use-after-free vulnerability potentially allowing a chrome sandbox escape leading to local privilege escalation.
-- **[CVE-2024-43093](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Framework Privilege Escalation Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2024-11-07
-  - Products: Android, Framework
-  - Android Framework contains an unspecified vulnerability that allows for privilege escalation.
-- **[CVE-2024-36971](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Kernel Remote Code Execution Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2024-08-07
-  - Products: Android, Kernel
-  - Android contains an unspecified vulnerability in the kernel that allows for remote code execution. This vulnerability resides in Linux Kernel and could impact other products, including but not limited to Android OS.
-- **[CVE-2024-32896](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Pixel Privilege Escalation Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2024-06-13
-  - Products: Android, Pixel
-  - Android Pixel contains an unspecified vulnerability in the firmware that allows for privilege escalation.
-- **[CVE-2024-29748](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Pixel Privilege Escalation Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2024-04-04
-  - Products: Android, Pixel
-  - Android Pixel contains a privilege escalation vulnerability that allows an attacker to interrupt a factory reset triggered by a device admin app.
-- **[CVE-2024-29745](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Pixel Information Disclosure Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2024-04-04
-  - Products: Android, Pixel
-  - Android Pixel contains an information disclosure vulnerability in the fastboot firmware used to support unlocking, flashing, and locking affected devices.
-- **[CVE-2023-21237](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Pixel Information Disclosure Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2024-03-05
-  - Products: Android, Pixel
-  - Android Pixel contains a vulnerability in the Framework component, where the UI may be misleading or insufficient, providing a means to hide a foreground service notification. This could enable a local attacker to disclose sensitive information.
-- **[CVE-2023-6345](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Google Skia Integer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2023-11-30
-  - Products: Google, Chromium Skia
-  - Google Chromium Skia contains an integer overflow vulnerability that allows a remote attacker, who has compromised the renderer process, to potentially perform a sandbox escape via a malicious file. This vulnerability affects Google Chrome and ChromeOS, Android, Flutter, and possibly other products.
-- **[CVE-2023-35674](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Android Framework Privilege Escalation Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2023-09-13
-  - Products: Android, Framework
-  - Android Framework contains an unspecified vulnerability that allows for privilege escalation.
-- **[CVE-2023-21492](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Samsung Mobile Devices Insertion of Sensitive Information Into Log File Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2023-05-19
-  - Products: Samsung, Mobile Devices
-  - Samsung mobile devices running Android 11, 12, and 13 contain an insertion of sensitive information into log file vulnerability that allows a privileged, local attacker to conduct an address space layout randomization (ASLR) bypass.
+### 2. Java4Shell: OpenJDK Base64 decoder memory corruption
+- **CVE-2026-114938 | Published 17 Nov; Red Hat advisory updated 20 Nov 2026.**
+- Red Hat rates it Critical. It affects OpenJDK 17.0.6 and later on x86-64 CPUs exposing AVX-512 VBMI, when attacker-controlled Base64 input reaches the accelerated java.util.Base64.Decoder path. Pre-authentication RCE has been demonstrated in affected application configurations. ARM64 and CPUs without AVX-512 VBMI are not known to be affected; OpenJDK 8 and 11 do not contain this vulnerable path.
+- Oracle's November 2026 security update lists fixed Java builds including 17.0.21.0.3, 21.0.13.0.3 and 25.0.5.0.3. Red Hat's advisory still described fixes as being expedited when last updated.
+- **Action:** inventory the actual JVM inside apps, containers and appliances, check CPU features, apply the supported vendor fix as soon as available. Red Hat's preferred interim mitigation is -XX:-UseBASE64Intrinsics; use -XX:UseAVX=2 only where appropriate on x86-64. Treat workarounds as temporary.
+- Sources: [Red Hat RHSB-2026-018](https://access.redhat.com/security/vulnerabilities/RHSB-2026-018) · [Oracle November 2026 CSPU](https://www.oracle.com/security-alerts/cspunov2026.html)
 
-### iOS Security Agent
+### 3. Ruby memory-safety issues and GitLab patch
+- **CVE-2026-132825 / GHSA-34m4-m9fh-gqp5 | Publicly disclosed 18-19 Nov 2026.**
+- A one-byte heap overflow in Ruby string case conversion may permit RCE in some scenarios. The Ruby project also disclosed six related regular-expression and string-conversion flaws; it says PoCs demonstrate RCE for some of them. Ruby rates the relevant advisories Critical, while NVD's CVE-2026-132825 score is High (7.4).
+- Affected Ruby: 3.3.13 and earlier, 3.4.0-3.4.12, and 4.0.0-4.0.9. Fixed: **3.3.14, 3.4.13, 4.0.10**.
+- GitLab's 20 Nov critical patch release fixes CVE-2026-132825 in **19.4.10, 19.5.8 and 19.6.1**. Self-compiled GitLab installations need to rebuild against patched Ruby.
+- Sources: [Ruby security advisory, 18 Nov](https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/) · [GitLab patch release, 20 Nov](https://docs.gitlab.com/ja-jp/releases/patches/patch-release-gitlab-19-6-1-released/)
 
-- **[CVE-2024-27834](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple Multiple Products Improper Authentication Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-04
-  - Products: Apple, Multiple Products
-  - Apple iOS, iPadOS, macOS, Safari, tvOS and watchOS 10.5 contain an improper authentication vulnerability which could allow an attacker with arbitrary read and write capability to bypass pointer authentication.
-- **[CVE-2025-61624](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Fortinet Multiple Products Path Traversal Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-16
-  - Products: Fortinet, Multiple Products
-  - FortiOS, FortiPAM, FortiProxy, and FortiSwitchManager contain a path traversal vulnerability that may allow an authenticated attacker with admin profile and at least read-write permissions to write or delete arbitrary files via specific CLI commands.
-- **[CVE-2026-86950](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple Multiple Products Out-of-Bounds Write Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-29
-  - Products: Apple, Multiple Products
-  - Apple iOS, macOS, and iPadOS contain an out-of-bounds write vulnerability in CoreGraphics that may lead to arbitrary code execution.
-- **[CVE-2025-25249](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Fortinet Multiple Products Heap-based Buffer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-09
-  - Products: Fortinet, Multiple Products
-  - Fortinet FortiOS, FortiSwitchManager, and FortiSASE contain a heap-based buffer overflow vulnerability that allows an attacker to execute unauthorized code or commands via specially crafted packets.
-- **[CVE-2026-65400](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple macOS Improper Authentication Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-08-18
-  - Products: Apple, macOS
-  - Apple macOS contains an improper authentication vulnerability that could allow an attacker on the network to authenticate to Screen Sharing without valid credentials.
-- **[CVE-2025-68686](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Fortinet FortiOS Exposure of Sensitive Information to an Unauthorized Actor Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-07-27
-  - Products: Fortinet, FortiOS
-  - Fortinet FortiOS contains an exposure of sensitive information to an unauthorized actor vulnerability. This may allow a remote unauthenticated attacker to bypass the patch developed for the symbolic link persistency mechanism observed in some post-exploit cases, via crafted HTTP requests. An attacker would need first to have compromised the product via another vulnerability, at filesystem level.
-- **[CVE-2008-4128](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Cisco IOS Cross-Site Request Forgery Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-07-13
-  - Products: Cisco, IOS
-  - Cisco IOS 12.4 contains multiple cross-site forgery vulnerabilities that allows remote attackers to execute arbitrary commands via (1) a certain "show privilege" command to the /level/15/exec/- URI, and (2) a certain "alias exec" command to the /level/15/exec/-/configure/http URI.
-- **[CVE-2025-54068](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Laravel Livewire Code Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-20
-  - Products: Laravel, Livewire
-  - Laravel Livewire contain a code injection vulnerability that could allow unauthenticated attackers to achieve remote command execution in specific scenarios.
-- **[CVE-2025-43510](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple Multiple Products Improper Locking Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-20
-  - Products: Apple, Multiple Products
-  - Apple watchOS, iOS, iPadOS, macOS, visionOS, and tvOS contain an improper locking vulnerability that could allow a malicious application to cause unexpected changes in memory shared between processes.
-- **[CVE-2025-43520](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple Multiple Products Classic Buffer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-20
-  - Products: Apple, Multiple Products
-  - Apple watchOS, iOS, iPadOS, macOS, visionOS, and tvOS contain a classic buffer overflow vulnerability which could allow a malicious application to cause unexpected system termination or write kernel memory.
-- **[CVE-2025-31277](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple Multiple Products Buffer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-20
-  - Products: Apple, Multiple Products
-  - Apple Safari, iOS, watchOS, visionOS, iPadOS, macOS, and tvOS contain a buffer overflow vulnerability that could allow the processing of maliciously crafted web content which may lead to memory corruption.
-- **[CVE-2023-43000](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple Multiple products Use-After-Free Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-05
-  - Products: Apple, Multiple Products
-  - Apple macOS, iOS, iPadOS, and Safari 16.6 contain a use-after-free vulnerability due to the processing of maliciously crafted web content that may lead to memory corruption.
-- **[CVE-2021-30952](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple Multiple Products Integer Overflow or Wraparound Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-05
-  - Products: Apple, Multiple Products
-  - Apple tvOS, macOS, Safari, iPadOS and watchOS contain an integer overflow or wraparound vulnerability due to the processing of maliciously crafted web content that may lead to arbitrary code execution.
-- **[CVE-2023-41974](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple iOS and iPadOS Use-After-Free Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-05
-  - Products: Apple, iOS and iPadOS
-  - Apple iOS and iPadOS contain a use-after-free vulnerability. An app may be able to execute arbitrary code with kernel privileges.
-- **[CVE-2026-20700](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apple Multiple Buffer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-02-12
-  - Products: Apple, Multiple Products
-  - Apple iOS, macOS, tvOS, watchOS, and visionOS contain an improper restriction of operations within the bounds of a memory buffer vulnerability that could allow an attacker with memory write the capability to execute arbitrary code.
+### 4. Brotli / Node2Shell and nginx HTTP/2
+- **CVE-2026-111497 (Node2Shell)**: Node.js' bundled Brotli decoder can corrupt memory when an application decompresses attacker-controlled Brotli data, potentially leading to crash, disclosure or RCE. Node.js classifies it High; the GitHub Advisory Database rates the Brotli issue CVSS 4.0 9.2 Critical. Fixed Node.js releases are **22.23.4, 24.22.1 and 26.12.1**. Python Brotli and brotlicffi packages also need their respective patched releases. Audit embedded runtimes and container base images, not only top-level package manifests.
+- **CVE-2026-123007 / CVE-2026-123633**: nginx HTTP/2 memory corruption and use-after-free. nginx lists fixed versions **1.31.9+ or 1.30.7+**. F5 fixes were reported on 18 Nov.
+- **Action:** update Node.js/Brotli and nginx at every ingress, API gateway, service and container layer; rebuild and restart workloads so old libraries are not left loaded.
+- Sources: [Node.js security release, 21 Oct](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases) · [GitHub Brotli advisory](https://github.com/advisories/GHSA-9v8h-qqgm-4m35) · [nginx security advisories](https://nginx.org/en/security_advisories.html)
 
-### Web Security Agent
+### 5. Actively exploited Outlook spoofing issue
+- **CVE-2026-124194 | Published 10 Nov 2026 | Microsoft severity Moderate, CVSS 6.5.**
+- Microsoft marks exploitation as detected. An attacker sends a crafted Office message file and must persuade the recipient to open it; Outlook may connect to an attacker-controlled network location without the normal warning, exposing an NTLMv2 hash. Microsoft says the Preview Pane is **not** an attack vector.
+- **Action:** deploy the Microsoft security update, reduce or disable NTLM where operationally possible, and reinforce handling of unexpected Office files.
+- Source: [Microsoft Security Response Center advisory](https://msrc.microsoft.com/security-guidance/advisory/CVE-2026-124194)
 
-- **[CVE-2026-90817](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Vanderbilt University Research Electronic Data Capture (REDCap) Code Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Vanderbilt University, Research Electronic Data Capture (REDCap)
-  - Vanderbilt University Research Electronic Data Capture (REDCap) contains a code injection vulnerability which could allow an unauthenticated attacker to execute arbitrary code on the server. An attacker could exploit this via crafted HTTP requests that access an unintended controller route from a public survey context and supply a crafted file-path or stream parameter during data import processing. Exploitation requires knowledge of a valid public survey hash.
-- **[CVE-2026-90436](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apache Axis Unsafe Reflection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Apache, Axis
-  - Apache Axis contains an unsafe reflection vulnerability that could allow an unauthenticated remote attacker to execute arbitrary code via a crafted SOAP fault message that causes Axis to load and instantiate an attacker-specified class when a suitable class is available on the application classpath. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.
-- **[CVE-2026-111560](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Barracuda Networks Multiple Products OS Command Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Barracuda Networks, Multiple Products
-  - Barracuda Networks Email Security Gateway (ESG), Load Balancer, Application Delivery Controller (ADC), Message Archiver (BMA), WAF Control Center (WCC), Web Application Firewall (WAF), and Web Security Gateway (WSG) contain an OS command injection vulnerability. This vulnerability could allow an authenticated administrator to inject OS commands that execute with root privileges when the crafted timezone value is subsequently processed. This vulnerability can be chained with CVE-2026-116606
-- **[CVE-2026-119977](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: WordPress WordPress Core Time-of-check Time-of-use (TOCTOU) Race Condition Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-03
-  - Products: WordPress, WordPress Core
-  - WordPress WordPress Core contains a time-of-check time-of-use (TOCTOU) race condition vulnerability that could allow unauthenticated attackers to execute code on the server during the upgrade window. This is due to predictable, web-accessible staging paths used during full-package core upgrades.
-- **[CVE-2026-21589](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Atlassian Multiple Products Files or Directories Accessible to External Parties Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-15
-  - Products: Atlassian, Multiple Products
-  - Multiple Atlassian products (Bitbucket Data Center ,Confluence Data Center, Jira Service Management Data Center, Jira Software Data Center, Bamboo Data Center, Crowd Data Center, Crucible and Fisheye) contain a files or directories accessible to external parties vulnerability which could allow an unauthenticated attacker to access specific files within the web application root directory in affected versions.
-- **[CVE-2016-3081](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apache Struts Command Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-08
-  - Products: Apache, Struts
-  - Apache Struts contains a command injection vulnerability that could allow remote attackers to execute arbitrary code via method:prefix when Dynamic Method Invocation is enabled.
-- **[CVE-2026-104286](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Fortinet FortiMail Path Traversal Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-01
-  - Products: Fortinet, FortiMail
-  - Fortinet FortiMail contains a path traversal and an improper neutralization of NULL byte or NULL character vulnerability that may allow an unauthenticated attacker to write arbitrary files on the underlying system via crafted HTTP or HTTPS requests.
-- **[CVE-2026-76504](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Cisco Catalyst SD-WAN Manager Hex Encoding Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-30
-  - Products: Cisco, Catalyst SD-WAN Manager
-  - Cisco Catalyst SD-WAN Manager contains a hex encoding vulnerability that could allow an unauthenticated, remote attacker to access an affected system with privileges of the admin user due to improper handling of URI encoding in an HTTP request.
-- **[CVE-2026-87902](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: WordPress Core Remote File Inclusion Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-25
-  - Products: WordPress, Core
-  - WordPress Core contains a remote file inclusion vulnerability which could allow an unauthenticated attacker to make page-template resolution include a chosen readable local `.php` file outside the active theme directories, leading to remote code execution.
-- **[CVE-2026-7273](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Zyxel GS1900 Series Switches Stack-Based Buffer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-21
-  - Products: Zyxel, GS1900 Series Switches
-  - Zyxel GS1900 series switches contain a stack-based buffer overflow vulnerability in the CGI program which could allow a LAN-based, unauthenticated attacker to exploit the flaw and potentially execute OS commands via a crafted HTTP request.
-- **[CVE-2026-59822](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: BerriAI LiteLLM Improper Authentication Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-02
-  - Products: BerriAI, LiteLLM
-  - BerriAI LiteLLM contains an improper authentication vulnerability in the MCP Streamable HTTP endpoint that could allow an unauthenticated attacker to establish an authenticated MCP session using an arbitrary Bearer token.
-- **[CVE-2026-48710](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Kludex Starlette HTTP Request/Response Smuggling Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-02
-  - Products: Kludex, Starlette
-  - Kludex Starlette contains a HTTP request/response smuggling vulnerability that could allow attackers to inject paths into the host part, prepending the actual path leading to issues such as authentication bypass when the authentication depends on the reconstructed URL’s path. This vulnerability could be chaned with CVE-2026-42271.
-- **[CVE-2026-21962](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Oracle HTTP Server and Oracle Weblogic Server Proxy Plug-in Improper Access Control Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-08-24
-  - Products: Oracle, HTTP Server and Oracle Weblogic Server Proxy Plug-in
-  - Oracle HTTP Server and Oracle Weblogic Server Proxy Plug-in contain an improper access control vulnerability that can result in unauthorized creation, deletion or modification access to critical data as well as unauthorized access to critical data or complete access to all Oracle HTTP Server and Oracle Weblogic Server Proxy Plug-in accessible data.
-- **[CVE-2026-34486](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apache Tomcat Missing Encryption of Sensitive Data Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-08-04
-  - Products: Apache, Tomcat
-  - Apache Tomcat contains a missing encryption of sensitive data vulnerability that allows the bypass of the EncryptInterceptor. This vulnerability can be chained with CVE‑2025‑24813.
-- **[CVE-2025-68686](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Fortinet FortiOS Exposure of Sensitive Information to an Unauthorized Actor Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-07-27
-  - Products: Fortinet, FortiOS
-  - Fortinet FortiOS contains an exposure of sensitive information to an unauthorized actor vulnerability. This may allow a remote unauthenticated attacker to bypass the patch developed for the symbolic link persistency mechanism observed in some post-exploit cases, via crafted HTTP requests. An attacker would need first to have compromised the product via another vulnerability, at filesystem level.
+## Android and iOS
 
-### API Security Agent
+- **Android November Security Bulletin**, published 2 Nov and updated 6 Nov: **CVE-2026-58868** is a Critical Framework RCE that Google says needs no user interaction or additional execution privileges. The bulletin also lists critical system RCEs including CVE-2026-58876 and CVE-2026-58936. Patch level **2026-11-05 or later** addresses the bulletin; OEM rollout timing varies.
+  - Source: [Android Security Bulletin—November 2026](https://source.android.com/docs/security/bulletin/2026/2026-11-01)
+- **iOS/iPadOS 27.2.1**, released 9 Nov: fixes include CVE-2026-113961 (remote joining of an iMessage group and receiving messages), CVE-2026-113964 (Bluetooth pairing-rate-limit bypass), CVE-2026-113965 (Bluetooth pairing without user interaction), and CVE-2026-111497 in Brotli.
+  - Source: [Apple security content for iOS/iPadOS 27.2.1](https://support.apple.com/en-asia/149715)
+- **Action:** install the latest vendor updates. Android users should verify the device's actual security patch string, not assume the AOSP bulletin means their OEM has shipped it.
 
-- **[CVE-2024-10441](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Synology, DiskStation Manager (DSM)
-  - Synology DSM contains an improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) that could allow a remote attacker to execute arbitrary code via unspecified vectors.
-- **[CVE-2026-20320](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Cisco BroadWorks Improper Restriction of XML External Entity Reference Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Cisco, BroadWorks
-  - Cisco BroadWorks contains an improper restriction of XML external entity reference vulnerability that could allow an unauthenticated, remote attacker to read sensitive configuration information on an affected system.
-- **[CVE-2026-116606](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Barracuda Networks Email Security Gateway (ESG) Authentication Bypass Using an Alternate Path or Channel Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Barracuda Networks, Barracuda Email Security Gateway (ESG)
-  - Barracuda Networks Email Security Gateway (ESG) contains an authentication bypass using an alternate path or channel that could allow an unauthenticated remote attacker to invoke a configuration-import function and restore a crafted, compatible backup archive, resulting in unauthorized modification of the appliance’s global configuration. This vulnerability can be chained with CVE-2026-111560.
-- **[CVE-2026-102895](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: GPUStack Improper Authentication Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-09
-  - Products: GPUStack, GPUStack
-  - GPUStack contains an improper authentication vulnerability which could allow unauthenticated administrative access, including user and model changes, persistent administrator API-key creation, disclosure of worker and cloud-provider secrets, and code execution through POST /v2/inference-backends/from-yaml.
-- **[CVE-2026-48356](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Adobe Commerce and Magento Unrestricted Upload of File with Dangerous Type Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-27
-  - Products: Adobe, Commerce and Magento
-  - Adobe Commerce and Magento contain an unrestricted upload of file with dangerous type vulnerability that could result in arbitrary code execution in the context of the current user, potentially gaining elevated access or control over the victim's account or session.
-- **[CVE-2026-105134](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Ahsay AhsayCBS Command Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-14
-  - Products: Ahsay, AhsayCBS
-  - Ahsay AhsayCBS contains a command injection vulnerability that could allow a remote attacker to execute operating system commands via manipulation of the random parameter in the Replication Receiver component’s /rps/api/json/UpdateReceivers.do endpoint. This vulnerability can be chained with CVE-2026-105133.
-- **[CVE-2026-105133](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Ahsay AhsayCBS Improper Authentication Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-14
-  - Products: Ahsay, AhsayCBS
-  - Ahsay AhsayCBS contains an improper authentication vulnerability that could allow a remote attacker to bypass authentication via manipulation of the random parameter in the API component’s checkSysPwd function. This vulnerability can be chained with CVE-2026-105134.
-- **[CVE-2023-22894](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Strapi Cleartext Storage of Sensitive Information Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-08
-  - Products: Strapi, Strapi
-  - Strapi contains a cleartext storage of sensitive information vulnerability that could allow attackers with access to the admin panel to discover sensitive user details via the query filter. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version. This vulnerability can be chained with CVE-2023-22621 to achieve remote code execution.
-- **[CVE-2021-3199](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: ONLYOFFICE Docs Server Path Traversal Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-08
-  - Products: ONLYOFFICE, Docs
-  - ONLYOFFICE Docs contains a path traversal vulnerability that can occur when JWT is used, via a /.. sequence in an image upload parameter and could allow for remote code execution.
-- **[CVE-2026-88779](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Citrix NetScaler Improper Restriction of Operations within the Bounds of a Memory Buffer Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-04
-  - Products: Citrix, NetScaler
-  - Citrix NetScaler ADC (formerly Citrix ADC) and Citrix NetScaler Gateway (formerly Citrix Gateway) contain an improper restriction of operations within the bounds of a memory buffer vulnerability that could allow for a denial of service.
-- **[CVE-2026-88772](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Citrix NetScaler Improper Restriction of Operations within the Bounds of a Memory Buffer Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-27
-  - Products: Citrix, NetScaler
-  - Citrix NetScaler ADC and NetScaler Gateway contain an improper restriction of operations within the bounds of a memory buffer vulnerability that could allow for remote code execution or denial of service
-- **[CVE-2026-5430](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: WSO2 Multiple Products Path Traversal Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-24
-  - Products: WSO2, Multiple Products
-  - WSO2 API Control Plane, API Manager, Traffic Manager & Universal Gateway contain a path traversal vulnerability that could allow for unrestricted file upload and lead to remote code execution.
-- **[CVE-2026-94127](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: F5 BIG-IP APM Heap-based Buffer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-22
-  - Products: F5, BIG-IP APM
-  - F5 BIG-IP APM contains a heap-based buffer overflow vulnerability when access policy and an OAuth profile are configured on a virtual server. This vulnerability could allow an unauthenticated attacker to perform remote code execution.
-- **[CVE-2026-76460](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Cisco Identity Services Engine Incorrect Use of Privileged APIs Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-16
-  - Products: Cisco, Identity Services Engine
-  - Cisco Identity Services Engine (ISE) and Cisco ISE Passive Identity Connector (ISE-PIC) contain an incorrect use of privileged APIs vulnerability that could allow an unauthenticated, remote attacker to gain unauthorized access to the affected device by bypassing the web-based management interface.
-- **[CVE-2026-85706](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: GitLab Community Edition and Enterprise Edition Path Traversal Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-11
-  - Products: GitLab, Community Edition and Enterprise Edition
-  - GitLab Community Edition and Enterprise Edition contains a path traversal vulnerability that allows an unauthenticated user to read arbitrary files due to an improper path confinement and missing authentication enforcement in the repository commits API.
+## REST API, identity and OAuth developments
 
-### Cloud and Infrastructure Agent
+- Node.js' 21 Oct security release also fixed hostname-validation defects relevant to API clients and webhook fetchers: **CVE-2026-105482** (NUL-byte hostname truncation in DNS resolution), **CVE-2026-105483**, **CVE-2026-106069** and **CVE-2026-106072** (TLS identity checks involving non-canonical IP spellings). These can undermine hostname allowlists or certificate-to-host validation when applications accept unusual host representations. Patch to the fixed Node.js releases above; canonicalize and validate destinations consistently before DNS resolution and TLS connection.
+- **OAuth work in progress:** IETF draft draft-ietf-oauth-security-topics-update-03, published 6 Jul 2026, discusses audience-injection and cross-toolkit OAuth account-takeover risks, particularly in multi-provider and multi-tenant integrations. It is an Internet-Draft, **not a finalized RFC**. Review client-assertion audience binding (issuer identifier or exact endpoint), isolate OAuth context by toolkit/provider/tenant, and bind callback context to the user's session.
+- Sources: [Node.js security release](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases) · [IETF OAuth security update draft](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-update)
 
-- **[CVE-2026-123158](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: OpenBSD OpenSSH Unexpected Status Code or Return Value Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-09
-  - Products: OpenBSD, OpenSSH
-  - OpenBSD OpenSSH on Linux contains an unexpected status code or return value vulnerability that could allow for authentication bypass.
-- **[CVE-2026-46300](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Missing Initialization of a Variable Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-10-28
-  - Products: Linux, Kernel
-  - Linux Kernel contains a missing initialization of a variable vulnerability that could allow for unintended modification of page-cache-backed data via failure to preserve the shared-fragment marker during socket buffer coalescing, causing ESP input processing to decrypt shared fragments in place. This vulnerability can be chained with CVE-2026-109618 and CVE-2026-109619 to implant PHP webshells and run commands as root.
-- **[CVE-2025-39964](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Race Condition Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-18
-  - Products: Linux, Kernel
-  - Linux Kernel contains a race condition vulnerability which allows concurrent writes to the same AF_ALG socket causing data to be unpredictably interleaved and creating inconsistencies in the socket's internal state.
-- **[CVE-2026-53266](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Out-of-Bounds Write Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-18
-  - Products: Linux, Kernel
-  - Linux Kernel contains an out-of-bounds write vulnerability in the ebtables SNAT target which allows an ARP sender hardware address rewrite to write directly into a nonlinear socket-buffer fragment backed by a splice-imported file page. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.
-- **[CVE-2025-39682](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Improper Check for Unusual or Exceptional Conditions Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-18
-  - Products: Linux, Kernel
-  - Linux Kernel contains an improper check for unusual or exceptional conditions vulnerability in the TLS receive path which allows a zero-length record retrieved from the rx_list to bypass the intended recvmsg() record-type handling, potentially causing subsequent TLS records to be processed using incorrect zero-copy and queuing assumptions. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.
-- **[CVE-2026-53362](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Unspecified Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-08-27
-  - Products: Linux, Kernel
-  - Linux Kernel contains an unspecified vulnerability that can allow for privilege escalation via IPv6 networking subsystem. This vulnerability can impact multiple products, including but not limited to Suse, Red Hat, and other products using Linux.
-- **[CVE-2026-66384](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: JFrog Artifactory Improper Limitation of a Pathname to a Restricted Directory Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-08-27
-  - Products: JFrog, Artifactory
-  - JFrog Artifactory contains an improper limitation of a pathname to a restricted directory vulnerability. This can allow an authenticated user to write data outside the intended Docker cache path under specific remote-repository conditions.
-- **[CVE-2022-0995](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Out-of-Bounds Write Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-08-26
-  - Products: Linux, Kernel
-  - Linux Kernel contains an out-of-bounds memory write vulnerability which could allow a local user to gain privileged access or cause a denial of service on the system.
-- **[CVE-2026-54420](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: LiteSpeed cPanel Plugin UNIX Symbolic Link (Symlink) Following Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-06-15
-  - Products: LiteSpeed, cPanel Plugin
-  - LiteSpeed cPanel plugin contains a UNIX symbolic link (Symlink) following vulnerability that could allow a user with FTP or web shell access on a shared hosting server running CloudLinux/CageFS.
-- **[CVE-2022-0492](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Improper Authentication Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-06-02
-  - Products: Linux, Kernel
-  - Linux Kernel contains an improper authentication vulnerability which could allow for privilege escalation via the cgroups v1 release_agent feature.
-- **[CVE-2026-31431](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Incorrect Resource Transfer Between Spheres Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-05-01
-  - Products: Linux, Kernel
-  - Linux Kernel contains an incorrect resource transfer between spheres vulnerability that could allow for privilege escalation.
-- **[CVE-2026-33634](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Aquasecurity Trivy Embedded Malicious Code Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-03-26
-  - Products: Aquasecurity, Trivy
-  - Aquasecurity Trivy contains an embedded malicious code vulnerability that could allow an attacker to gain access to everything in the CI/CD environment, including all tokens, SSH keys, cloud credentials, database passwords, and any sensitive configuration in memory.
-- **[CVE-2025-64328](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Sangoma FreePBX OS Command Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-02-03
-  - Products: Sangoma, FreePBX
-  - Sangoma FreePBX Endpoint Manager contains an OS command injection vulnerability that could allow for a post-authentication command injection by an authenticated known user via the testconnection -> check_ssh_connect() function. An attacker can leverage this vulnerability to potentially obtain remote access to the system as an asterisk user.
-- **[CVE-2018-14634](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Integer Overflow Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-01-26
-  - Products: Linux, Kernel
-  - Linux Kernel contains an integer overflow vulnerability in the create_elf_tables() function which could allow an unprivileged local user with access to SUID (or otherwise privileged) binary to escalate their privileges on the system.
-- **[CVE-2021-22555](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Linux Kernel Heap Out-of-Bounds Write Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2025-10-06
-  - Products: Linux, Kernel
-  - Linux Kernel contains a heap out-of-bounds write vulnerability that could allow an attacker to gain privileges or cause a DoS (via heap memory corruption) through user name space.
+## Bug bounty and program-scope intelligence
 
-### General Vulnerability Agent
+- **HackerOne, 19 Nov:** its security updates explicitly state that findings involving **HackerOne-owned assets** related to nginx CVE-2026-123007/CVE-2026-123633 and the newly disclosed Ruby vulnerabilities are in scope. This is a program-specific invitation, not permission to test arbitrary nginx or Ruby deployments. Verify the live [HackerOne program asset list and rules](https://hackerone.com/security) before any activity.
+- **Bugcrowd, 18 Nov:** new researchers can have only one report awaiting review at a time on Managed Bug Bounty programs until their accuracy exceeds 50%. On 3 Nov, API v1.4.0 added published engagement-brief endpoints that expose the scope/reward snapshot researchers submitted against and fixed engagement-list pagination. On 2 Nov, Bugcrowd documented Test Operator, Asset Owner and Asset Viewer roles; Test Operator access must be explicitly granted by an Organization Owner.
+- Sources: [HackerOne nginx update](https://www.hackerone.com/security-updates/cve-2026-123633-and-cve-2026-123007) · [HackerOne Ruby update](https://www.hackerone.com/security-updates/ghsa-34m4-m9fh-gqp5-and-related-ruby-advisories-2026) · [Bugcrowd changelog](https://docs.bugcrowd.com/changelog/) · [Bugcrowd API v1.4.0](https://docs.bugcrowd.com/changelog/api/api-version-1.4.0/)
 
-- **[CVE-2024-10441](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Synology, DiskStation Manager (DSM)
-  - Synology DSM contains an improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) that could allow a remote attacker to execute arbitrary code via unspecified vectors.
-- **[CVE-2026-40217](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: BerriAI LiteLLM Unprotected Alternate Channel Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: BerriAI, LiteLLM
-  - BerriAI LiteLLM contains an unprotected alternate channel vulnerability that could allow remote attackers to execute arbitrary code via bytecode rewriting at the /guardrails/test_custom_code URI.
-- **[CVE-2026-90817](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Vanderbilt University Research Electronic Data Capture (REDCap) Code Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Vanderbilt University, Research Electronic Data Capture (REDCap)
-  - Vanderbilt University Research Electronic Data Capture (REDCap) contains a code injection vulnerability which could allow an unauthenticated attacker to execute arbitrary code on the server. An attacker could exploit this via crafted HTTP requests that access an unintended controller route from a public survey context and supply a crafted file-path or stream parameter during data import processing. Exploitation requires knowledge of a valid public survey hash.
-- **[CVE-2026-90436](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apache Axis Unsafe Reflection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Apache, Axis
-  - Apache Axis contains an unsafe reflection vulnerability that could allow an unauthenticated remote attacker to execute arbitrary code via a crafted SOAP fault message that causes Axis to load and instantiate an attacker-specified class when a suitable class is available on the application classpath. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.
-- **[CVE-2026-115731](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Perforce Puppet Enterprise Deserialization of Untrusted Data Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-17
-  - Products: Perforce, Puppet Enterprise
-  - Perforce Puppet Enterprise contains a deserialization of untrusted data vulnerability in Puppet’s report-processing code that allows a client with any CA-signed agent certificate to execute arbitrary code on the Puppet Server as the service user by submitting a report containing a crafted rich-data type through a PUT request. If the certificate authority automatically signs requests without strong verification, an unauthenticated network attacker can obtain a valid certificate and exploit the vu
-- **[CVE-2026-114713](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: UnrealIRCd Improper Neutralization of Delimiters Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-13
-  - Products: UnrealIRCd, UnrealIRCd
-  - UnrealIRCd UnrealIRCd contains an improper neutralization of delimiters vulnerability that allows any user on a network with two or more linked servers to inject server-to-server commands that are executed with server authority.
-- **[CVE-2026-123039](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Check Point Multiple Products Incorrect Permission Assignment for Critical Resource Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-13
-  - Products: Check Point, Multiple Products
-  - Check Point Firewall, Multi-Domain Security Management Server, Scalable Platforms, Security Gateway, and Security Management Server contain an incorrect permissions assignment for critical resources vulnerability when the Gaia OS DynamicCLI daemon runs as root and listens on a world-writable local socket without authenticating connecting processes. An authenticated local user can send a command to the socket and have it executed as root.
-- **[CVE-2026-124194](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Microsoft Office Outlook Missing User Interaction for Potentially Unsafe Action Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Microsoft, Office
-  - Microsoft Office Outlook contains a missing user interaction for potentially unsafe action vulnerability that allows an unauthorized attacker to perform spoofing over a network.
-- **[CVE-2026-111793](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Openwave Messaging Limited Webtop Media Transcoder Incorrect Resource Transfer Between Spheres Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Openwave Messaging Limited, Webtop Media Transcoder
-  - Openwave Messaging Limited Webtop Media Transcoder contains an incorrect resource transfer between spheres vulnerability that may allow an authenticated user to process and convert unintended document types if bypassing the Webmail experience.
-- **[CVE-2026-20320](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Cisco BroadWorks Improper Restriction of XML External Entity Reference Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Cisco, BroadWorks
-  - Cisco BroadWorks contains an improper restriction of XML external entity reference vulnerability that could allow an unauthenticated, remote attacker to read sensitive configuration information on an affected system.
-- **[CVE-2026-111560](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Barracuda Networks Multiple Products OS Command Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Barracuda Networks, Multiple Products
-  - Barracuda Networks Email Security Gateway (ESG), Load Balancer, Application Delivery Controller (ADC), Message Archiver (BMA), WAF Control Center (WCC), Web Application Firewall (WAF), and Web Security Gateway (WSG) contain an OS command injection vulnerability. This vulnerability could allow an authenticated administrator to inject OS commands that execute with root privileges when the crafted timezone value is subsequently processed. This vulnerability can be chained with CVE-2026-116606
-- **[CVE-2026-116606](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Barracuda Networks Email Security Gateway (ESG) Authentication Bypass Using an Alternate Path or Channel Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Barracuda Networks, Barracuda Email Security Gateway (ESG)
-  - Barracuda Networks Email Security Gateway (ESG) contains an authentication bypass using an alternate path or channel that could allow an unauthenticated remote attacker to invoke a configuration-import function and restore a crafted, compatible backup archive, resulting in unauthorized modification of the appliance’s global configuration. This vulnerability can be chained with CVE-2026-111560.
-- **[CVE-2026-125350](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Google Chromium Use-After-Free Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-10
-  - Products: Google, Chromium
-  - Google Chromium contains a use-after-free vulnerability in the XML component that could allow a remote attacker to execute arbitrary code inside the sandbox via a specially crafted webpage. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.
-- **[CVE-2026-102895](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: GPUStack Improper Authentication Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-09
-  - Products: GPUStack, GPUStack
-  - GPUStack contains an improper authentication vulnerability which could allow unauthenticated administrative access, including user and model changes, persistent administrator API-key creation, disclosure of worker and cloud-provider secrets, and code execution through POST /v2/inference-backends/from-yaml.
-- **[CVE-2026-123158](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: OpenBSD OpenSSH Unexpected Status Code or Return Value Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-09
-  - Products: OpenBSD, OpenSSH
-  - OpenBSD OpenSSH on Linux contains an unexpected status code or return value vulnerability that could allow for authentication bypass.
+## Defensive research and authorized-testing relevance
 
-## Feed and execution notes
+- **Most consequential research:** GTIG/Mandiant's 19 Nov vCenter report connects CVE-2026-123890 to a real intrusion and details post-compromise SSO abuse. Prioritize patching and incident hunting over attempting to reproduce the bypass on production infrastructure.
+- **Good lab/review targets:** dependency inventory for Node/Brotli/Ruby/OpenJDK; unit tests for hostname canonicalization, TLS hostname matching, OAuth tenant/context binding and authorization checks; regression testing against local disposable services.
+- **Bug bounty:** the HackerOne scope notes above are the only explicit new program scope openings identified in this review. They apply only to the program's currently listed HackerOne-owned assets and its published rules.
+- **Authorization boundary:** do not probe public vCenter, nginx, GitLab, mobile backends or third-party APIs based on CVE relevance alone. Active testing requires explicit written authorization and exact in-scope asset confirmation.
 
-- CISA KEV identifies vulnerabilities known to be exploited in the wild; prioritize checking whether affected products exist in your own environment.
-- GitHub advisories are public ecosystem intelligence, not proof that any particular project is vulnerable.
-- Keyword-based agent routing is triage, not a complete product classifier. Review original advisories before making decisions.
-- This run did not scan, probe, exploit, or validate any website or bounty asset.
+## Immediate defensive checklist
+
+- [ ] Patch and review vCenter exposure; investigate possible prior compromise.
+- [ ] Inventory OpenJDK version, CPU instruction support and bundled JVMs; apply vendor fix or temporary mitigation.
+- [ ] Upgrade Ruby and self-managed GitLab; rebuild self-compiled deployments.
+- [ ] Upgrade Node.js/Brotli and nginx; rebuild/restart affected containers.
+- [ ] Apply Android 2026-11-05+ and iOS/iPadOS 27.2.1 updates.
+- [ ] Review Outlook patch status and NTLM exposure.
+- [ ] Reassess OAuth client assertions and multi-tenant connection-context isolation.
+
+**Limitations:** this briefing summarizes public vendor, standards-body and platform sources available at preparation time. It does not establish exposure in any particular environment, and no scanning, exploitation or continuous monitoring was performed.
