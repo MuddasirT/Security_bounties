@@ -1,11 +1,11 @@
-# Andy Security Intelligence Briefing: 2026-11-25
+# Andy Security Intelligence Briefing: 2026-11-26
 
-> Generated at 2026-11-25 11:38 UTC. Public advisory research only. No target testing was performed.
+> Generated at 2026-11-26 11:23 UTC. Public advisory research only. No target testing was performed.
 
 ## Executive summary
 
-- Public advisories collected: **1895**
-- CISA Known Exploited Vulnerabilities: **1795**
+- Public advisories collected: **1905**
+- CISA Known Exploited Vulnerabilities: **1805**
 - Feed errors: **0**
 
 ## Specialist agent findings
@@ -201,6 +201,10 @@
 
 ### API Security Agent
 
+- **[CVE-2026-133275](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Mitel MiCollab Unrestricted Upload of File with Dangerous Type Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Mitel, MiCollab
+  - Mitel MiCollab contains an unrestricted upload of file with dangerous type vulnerability in the Audio, Web and Video Conferencing (AWV) component due to insufficient file type validation that could allow an unauthenticated attacker to upload arbitrary files.
 - **[CVE-2026-134624](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: N-able MailAssure (SpamExperts) Server-Side Request Forgery (SSRF) Vulnerability
   - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-23
   - Products: N-able, MailAssure
@@ -257,10 +261,6 @@
   - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-22
   - Products: F5, BIG-IP APM
   - F5 BIG-IP APM contains a heap-based buffer overflow vulnerability when access policy and an OAuth profile are configured on a virtual server. This vulnerability could allow an unauthenticated attacker to perform remote code execution.
-- **[CVE-2026-76460](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Cisco Identity Services Engine Incorrect Use of Privileged APIs Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-09-16
-  - Products: Cisco, Identity Services Engine
-  - Cisco Identity Services Engine (ISE) and Cisco ISE Passive Identity Connector (ISE-PIC) contain an incorrect use of privileged APIs vulnerability that could allow an unauthenticated, remote attacker to gain unauthorized access to the affected device by bypassing the web-based management interface.
 
 ### Cloud and Infrastructure Agent
 
@@ -327,6 +327,46 @@
 
 ### General Vulnerability Agent
 
+- **[CVE-2026-103406](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Hewlett Packard Enterprise (HPE) Juniper Session Smart Conductor and Session Smart Router OS Command Injection Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Hewlett Packard Enterprise (HPE), Juniper Session Smart Conductor and Session Smart Router
+  - Hewlett Packard Enterprise (HPE) Juniper Session Smart Conductor and Session Smart Router contain an OS command injection vulnerability that could allow a remote attacker to execute arbitrary commands as root via a specially crafted salt minion ID.
+- **[CVE-2026-133469](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Vates Xen Orchestra Improper Validation of Specified Type of Input Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Vates, Xen Orchestra
+  - Vates Xen Orchestra contains an improper validation of specified type of input vulnerability that could allow an unauthenticated attacker to bypass authentication and perform actions with administrative privileges via a specially crafted authentication token containing an empty JSON object.
+- **[CVE-2025-41450](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Danfoss AK-SM 800A Series Improper Authentication Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Danfoss, AK-SM 800A Series
+  - Danfoss AK-SM 800A Series contains an improper authentication vulnerability that could allow an attacker to generate a web report exposing sensitive information, including internal IP addresses, usernames, and store names.
+- **[CVE-2023-25914](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Danfoss AK-SM 800A Series Path Traversal Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Danfoss, AK-SM 800A Series
+  - Danfoss AK-SM 800A Series contains a path traversal vulnerability that could allow an attacker to access and read underlying server system files via the XML interface.
+- **[CVE-2023-25915](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Danfoss AK-SM 800A Series Improper Input Validation Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Danfoss, AK-SM 800A Series
+  - Danfoss AK-SM 800A Series contains an improper input validation vulnerability that could allow a remote attacker to run arbitrary commands on the affected system.
+- **[CVE-2026-133324](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Mitel MiCollab Not Failing Securely Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Mitel, MiCollab
+  - Mitel MiCollab contains a not failing securely vulnerability in the Audio, Web and Video Conferencing (AWV) component that could allow an unauthenticated attacker to bypass authentication controls and perform unauthorized actions.
+- **[CVE-2026-133275](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Mitel MiCollab Unrestricted Upload of File with Dangerous Type Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Mitel, MiCollab
+  - Mitel MiCollab contains an unrestricted upload of file with dangerous type vulnerability in the Audio, Web and Video Conferencing (AWV) component due to insufficient file type validation that could allow an unauthenticated attacker to upload arbitrary files.
+- **[CVE-2026-133311](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Mitel MiCollab Weak Authentication Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Mitel, MiCollab
+  - Mitel MiCollab contains a weak authentication vulnerability in the Audio, Web and Video Conferencing (AWV) component that could allow an unauthenticated attacker to access sensitive information using a specific system-generated random identifier or pre-staged content.
+- **[CVE-2026-133303](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Mitel MiCollab XML Injection Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Mitel, MiCollab
+  - Mitel MiCollab contains an XML injection vulnerability in its Audio, Web, and Video Conferencing (AWV) component that could allow an unauthenticated attacker to execute arbitrary commands using pre-staged malicious content.
+- **[CVE-2026-133323](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Mitel MiCollab OS Command Injection Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
+  - Products: Mitel, MiCollab
+  - Mitel MiCollab contains an improper neutralization of special elements used in an OS command (OS command injection) vulnerability in its Audio, Web, and Video Conferencing (AWV) component that could allow an unauthenticated attacker to execute arbitrary system commands.
 - **[CVE-2026-132224](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Optimizely Web Experimentation External Control of Critical State Data Vulnerability
   - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-24
   - Products: Optimizely, Web Experimentation
@@ -347,46 +387,6 @@
   - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-23
   - Products: N-able, MailAssure
   - N-able MailAssure (SpamExperts) contains a server-side request forgery vulnerability in the LDAP synchronization connection check that allows an authenticated API user to connect to arbitrary internal hosts and ports, determine which are reachable, and send crafted data to internal services.
-- **[CVE-2026-129448](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apache Roller Deserialization of Untrusted Data Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-20
-  - Products: Apache, Roller
-  - Apache Roller contains a deserialization of untrusted data vulnerability that allows an unauthenticated remote attacker to execute arbitrary code via the XML-RPC endpoint, which accepts and deserializes vendor extension types before authentication. This CVE covers the same underlying vulnerability as CVE-2026-82384 but applies to a broader range of affected versions.
-- **[CVE-2026-123890](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: VMWare vCenter Authentication Bypass Using an Alternate Path or Channel Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-20
-  - Products: Broadcom, VMware vCenter
-  - Broadcom VMware vCenter contains an authentication bypass using an alternate path or channel vulnerability in the VMware Directory Service that allows an unauthenticated attacker with network access to vCenter to bypass authentication and gain unauthorized access to the system.
-- **[CVE-2025-42884](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: SAP NetWeaver Improper Neutralization of Special Elements in Data Query Logic Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-20
-  - Products: SAP, NetWeaver
-  - SAP NetWeaver Enterprise Portal contains an improper neutralization of special elements in data query logic vulnerability that allows an unauthenticated attacker to disclose or modify server information via injected JNDI environment properties or a URL used during JNDI lookup operations.
-- **[CVE-2026-76466](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Cisco Expressway Series Use of Hard-coded Credentials Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-20
-  - Products: Cisco, Expressway Series
-  - Cisco Expressway Series contains a use of hard-coded credentials vulnerability that allows an unauthenticated, remote attacker with persistent cookies and network access to execute commands as root on a clustered device via the database service.
-- **[CVE-2024-10441](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Synology DiskStation Manager (DSM) Improper Encoding or Escaping of Output Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Synology, DiskStation Manager (DSM)
-  - Synology DSM contains an improper encoding or escaping of output vulnerability in the system plugin daemon in Synology BeeStation OS (BSM) that could allow a remote attacker to execute arbitrary code via unspecified vectors.
-- **[CVE-2026-40217](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: BerriAI LiteLLM Unprotected Alternate Channel Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: BerriAI, LiteLLM
-  - BerriAI LiteLLM contains an unprotected alternate channel vulnerability that could allow remote attackers to execute arbitrary code via bytecode rewriting at the /guardrails/test_custom_code URI.
-- **[CVE-2026-90817](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Vanderbilt University Research Electronic Data Capture (REDCap) Code Injection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Vanderbilt University, Research Electronic Data Capture (REDCap)
-  - Vanderbilt University Research Electronic Data Capture (REDCap) contains a code injection vulnerability which could allow an unauthenticated attacker to execute arbitrary code on the server. An attacker could exploit this via crafted HTTP requests that access an unintended controller route from a public survey context and supply a crafted file-path or stream parameter during data import processing. Exploitation requires knowledge of a valid public survey hash.
-- **[CVE-2026-90436](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apache Axis Unsafe Reflection Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-18
-  - Products: Apache, Axis
-  - Apache Axis contains an unsafe reflection vulnerability that could allow an unauthenticated remote attacker to execute arbitrary code via a crafted SOAP fault message that causes Axis to load and instantiate an attacker-specified class when a suitable class is available on the application classpath. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.
-- **[CVE-2026-115731](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Perforce Puppet Enterprise Deserialization of Untrusted Data Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-17
-  - Products: Perforce, Puppet Enterprise
-  - Perforce Puppet Enterprise contains a deserialization of untrusted data vulnerability in Puppet’s report-processing code that allows a client with any CA-signed agent certificate to execute arbitrary code on the Puppet Server as the service user by submitting a report containing a crafted rich-data type through a PUT request. If the certificate authority automatically signs requests without strong verification, an unauthenticated network attacker can obtain a valid certificate and exploit the vu
-- **[CVE-2026-114713](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: UnrealIRCd Improper Neutralization of Delimiters Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-13
-  - Products: UnrealIRCd, UnrealIRCd
-  - UnrealIRCd UnrealIRCd contains an improper neutralization of delimiters vulnerability that allows any user on a network with two or more linked servers to inject server-to-server commands that are executed with server authority.
 
 ## Feed and execution notes
 
