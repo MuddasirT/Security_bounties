@@ -1,6 +1,6 @@
-# Andy Security Intelligence Briefing: 2026-11-26
+# Andy Security Intelligence Briefing: 2026-11-27
 
-> Generated at 2026-11-26 11:23 UTC. Public advisory research only. No target testing was performed.
+> Generated at 2026-11-27 11:17 UTC. Public advisory research only. No target testing was performed.
 
 ## Executive summary
 
