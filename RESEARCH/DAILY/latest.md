@@ -1,11 +1,11 @@
-# Andy Security Intelligence Briefing: 2026-11-27
+# Andy Security Intelligence Briefing: 2026-11-28
 
-> Generated at 2026-11-27 11:17 UTC. Public advisory research only. No target testing was performed.
+> Generated at 2026-11-28 10:46 UTC. Public advisory research only. No target testing was performed.
 
 ## Executive summary
 
-- Public advisories collected: **1905**
-- CISA Known Exploited Vulnerabilities: **1805**
+- Public advisories collected: **1908**
+- CISA Known Exploited Vulnerabilities: **1808**
 - Feed errors: **0**
 
 ## Specialist agent findings
@@ -138,6 +138,10 @@
 
 ### Web Security Agent
 
+- **[CVE-2026-120705](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: OSGeo GeoServer XML Injection Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-27
+  - Products: OSGeo, GeoServer
+  - OsGeo GeoServer contains an XML injection vulnerability that allows an unauthenticated remote attacker to cause the server to read local text files accessible to the GeoServer process or fetch attacker-specified HTTP or HTTPS URLs via a crafted ID parameter in the WFS 2.0 GetFeatureById stored query. This vulnerability can be chained with CVE-2026-129244, CVE-2026-129243, CVE-2026-129245, and CVE-2026-129242 to achieve unauthenticated remote code execution on an affected GeoServer instance.
 - **[CVE-2026-129448](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apache Roller Deserialization of Untrusted Data Vulnerability
   - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-20
   - Products: Apache, Roller
@@ -194,10 +198,6 @@
   - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-08-24
   - Products: Oracle, HTTP Server and Oracle Weblogic Server Proxy Plug-in
   - Oracle HTTP Server and Oracle Weblogic Server Proxy Plug-in contain an improper access control vulnerability that can result in unauthorized creation, deletion or modification access to critical data as well as unauthorized access to critical data or complete access to all Oracle HTTP Server and Oracle Weblogic Server Proxy Plug-in accessible data.
-- **[CVE-2026-34486](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Apache Tomcat Missing Encryption of Sensitive Data Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-08-04
-  - Products: Apache, Tomcat
-  - Apache Tomcat contains a missing encryption of sensitive data vulnerability that allows the bypass of the EncryptInterceptor. This vulnerability can be chained with CVE‑2025‑24813.
 
 ### API Security Agent
 
@@ -327,6 +327,18 @@
 
 ### General Vulnerability Agent
 
+- **[CVE-2026-120705](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: OSGeo GeoServer XML Injection Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-27
+  - Products: OSGeo, GeoServer
+  - OsGeo GeoServer contains an XML injection vulnerability that allows an unauthenticated remote attacker to cause the server to read local text files accessible to the GeoServer process or fetch attacker-specified HTTP or HTTPS URLs via a crafted ID parameter in the WFS 2.0 GetFeatureById stored query. This vulnerability can be chained with CVE-2026-129244, CVE-2026-129243, CVE-2026-129245, and CVE-2026-129242 to achieve unauthenticated remote code execution on an affected GeoServer instance.
+- **[CVE-2026-129243](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: OSGeo GeoServer Incorrect Authorization Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-27
+  - Products: OSGeo, GeoServer
+  - GeoServer contains an incorrect authorization vulnerability that allows an unauthenticated remote attacker to bypass service-level role checks and invoke operations protected solely by those checks via a request with a prefixed service parameter. This vulnerability can be chained with CVE-2026-129244, CVE-2026-120705, CVE-2026-129245, and CVE-2026-129242 to achieve unauthenticated remote code execution on an affected GeoServer instance.
+- **[CVE-2026-136716](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Drupal Core Improper Check for Unusual or Exceptional Conditions Vulnerability
+  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-27
+  - Products: Drupal, Core
+  - Drupal Core contains an improper check for unusual or exceptional conditions vulnerability that allows an unauthenticated remote attacker to take over a site via the exposed Drupal installer when the site is in one of the affected unusual or incomplete installation states.
 - **[CVE-2026-103406](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Hewlett Packard Enterprise (HPE) Juniper Session Smart Conductor and Session Smart Router OS Command Injection Vulnerability
   - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-25
   - Products: Hewlett Packard Enterprise (HPE), Juniper Session Smart Conductor and Session Smart Router
@@ -375,18 +387,6 @@
   - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-24
   - Products: Idunno, AntiCsrf
   - Idunno AntiCsrf contains a deserialization of untrusted data vulnerability that allows an unauthenticated remote attacker to execute arbitrary code via object injection. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.
-- **[CVE-2026-132165](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Drupal Core Remote Code Execution Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-24
-  - Products: Drupal, Core
-  - Drupal Core contains a not failing securely vulnerability that could allow an unauthenticated attacker to take over an existing site or execute arbitrary code via the Drupal installer. Under specific conditions, the attacker can use install.php to attempt to reinstall Drupal on the site.
-- **[CVE-2026-133968](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: Project MONAI MONAI Label Path Traversal Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-23
-  - Products: Project MONAI, MONAI Label
-  - Project MONAI MONAI Label contains a path traversal vulnerability that allows an unauthenticated remote attacker to write arbitrary files outside the intended datastore directory, potentially resulting in remote code execution.
-- **[CVE-2026-134624](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)**: N-able MailAssure (SpamExperts) Server-Side Request Forgery (SSRF) Vulnerability
-  - Source: CISA KEV | Severity/status: known-exploited | Published: 2026-11-23
-  - Products: N-able, MailAssure
-  - N-able MailAssure (SpamExperts) contains a server-side request forgery vulnerability in the LDAP synchronization connection check that allows an authenticated API user to connect to arbitrary internal hosts and ports, determine which are reachable, and send crafted data to internal services.
 
 ## Feed and execution notes
 
